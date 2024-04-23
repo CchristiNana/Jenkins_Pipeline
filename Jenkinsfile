@@ -14,28 +14,16 @@ pipeline {
             }
             post {
     success {
-        script {
-            def log = currentBuild.rawBuild.getLog(100) // Adjust number of lines as needed
-            writeFile(file: "unit_integration_tests.log", text: log.join("\n"))
-        }
-        emailext (
             to: "cccccsy126@gmail.com",
             subject: "SUCCESS: Unit and Integration Tests",
             body: "The Unit and Integration Tests have passed successfully.",
             attachmentsPattern: "unit_integration_tests.log"
-        )
     }
     failure {
-        script {
-            def log = currentBuild.rawBuild.getLog(100) // Adjust number of lines as needed
-            writeFile(file: "unit_integration_tests.log", text: log.join("\n"))
-        }
-        emailext (
             to: "cccccsy126@gmail.com",
             subject: "FAILURE: Unit and Integration Tests",
             body: "The Unit and Integration Tests have failed. Please review the attached log for more details.",
             attachmentsPattern: "unit_integration_tests.log"
-        )
     }
 }
         }
