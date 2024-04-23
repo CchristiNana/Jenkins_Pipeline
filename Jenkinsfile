@@ -13,8 +13,8 @@ pipeline {
                 echo "Running unit tests with JUnit and integration tests with Selenium..." 
             }
             post {
-        success {
-            script {
+             success {
+              script {
                 // Store the console log in a variable
                 def consoleLog = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(env.BUILD_NUMBER).logFile.text
                 // Write the console log to a file
