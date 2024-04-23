@@ -1,41 +1,74 @@
-pipeline{
+pipeline {
     agent any
-    environment{
-        DIRECTORY_PATH = '/Users/chensisi/sit753Jenkins/Jenkinsfile'
-        TESTING_ENVIRONMENT = 'Quality Assurance'
-        PRODUCTION_ENVIRONMENT = 'Christina Chen'
-    }
-    stages{
-        stage('Build'){
-            steps{
-                echo "fetch the source code from the directory path specified by the environment variable"
-                echo "compile the code and generate any necessary artifacts"
+    stages {
+        stage('Build') {
+            steps {
+                // Maven could be used as a build automation tool here.
+                echo "Building with Maven..."
             }
         }
-        stage('Test'){
-            steps{
-                echo "unit tests" 
-                echo "integration tests"
+        stage('Unit and Integration Tests') {
+            steps {
+                // JUnit for unit testing, and Selenium for integration testing could be used here.
+                echo "Running unit tests with JUnit and integration tests with Selenium..." 
+            }
+            post {
+        success {
+            script {
+                // Store the console log in a variable
+                def consoleLog = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(env.BUILD_NUMBER).logFile.text
+                // Write the console log to a file
+                writeFile(file: "unit_integration_tests.log", text: consoleLog)
+            }
+            emailext (
+                to: "cccccsy126@gmail.com",
+                subject: "SUCCESS: Unit and Integration Tests",
+                body: "The Unit and Integration Tests have passed successfully.",
+                attachmentsPattern: "unit_integration_tests.log"
+            )
+        }
+        failure {
+            script {
+                // Store the console log in a variable
+                def consoleLog = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(env.BUILD_NUMBER).logFile.text
+                // Write the console log to a file
+                writeFile(file: "unit_integration_tests.log", text: consoleLog)
+            }
+            emailext (
+                to: "cccccsy126@gmail.com",
+                subject: "FAILURE: Unit and Integration Tests",
+                body: "The Unit and Integration Tests have failed. Please review the attached log for more details.",
+                attachmentsPattern: "unit_integration_tests.log"
+            )
+        }
+        stage('Code Analysis') {
+            steps {
+                // SonarQube could be used for static code analysis.
+                echo "Analyzing code with SonarQube..."
             }
         }
-        stage('Code Quality Check'){
-            steps{
-                echo "check the quality of the code"
+        stage('Security Scan') {
+            steps {
+                // Synopsys could be used for security scanning.
+                echo "Scanning security with Synopsys..."
             }
         }
-        stage('Deploy'){
-            steps{
-                echo "deploy the application to a testing environment specified by the environment variable"
+        stage('Deploy to Staging') {
+            steps {
+                // AWS EC2 instance could be used for deployment.
+                echo "Deploying to staging server with AWS EC2 instance..."
             }
         }
-         stage('Approval'){
-            steps{
-                sleep time: 10, unit: 'SECONDS'
+        stage('Integration Tests on Staging') {
+            steps {
+                // Selenium could be used again to run integration tests on the staging environment.
+                echo "Running integration tests on staging with Selenium..."
             }
         }
-         stage('Deploy to Production'){
-            steps{
-                echo "Deploy to Production started and completed in environment: $PRODUCTION_ENVIRONMENT!"
+        stage('Deploy to Production') {
+            steps {
+                // AWS EC2 instance could be used for deployment.
+                echo "Deploying to production server with AWS EC2 instance..."
             }
         }
     }
