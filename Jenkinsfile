@@ -41,6 +41,8 @@ pipeline {
                 attachmentsPattern: "unit_integration_tests.log"
             )
         }
+            }
+        }
         stage('Code Analysis') {
             steps {
                 // SonarQube could be used for static code analysis.
@@ -71,5 +73,5 @@ pipeline {
                 echo "Deploying to production server with AWS EC2 instance..."
             }
         }
-    }
-}
+     }
+ }
