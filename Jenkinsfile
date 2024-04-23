@@ -16,14 +16,12 @@ pipeline {
     success {
             mail to: "cccccsy126@gmail.com",
             subject: "SUCCESS: Unit and Integration Tests",
-            body: "The Unit and Integration Tests have passed successfully.",
-            attachmentsPattern: "unit_integration_tests.log"
+            body: "The Unit and Integration Tests have passed successfully. Attachment: unit_integration_tests.log"
     }
     failure {
             mail to: "cccccsy126@gmail.com",
             subject: "FAILURE: Unit and Integration Tests",
-            body: "The Unit and Integration Tests have failed. Please review the attached log for more details.",
-            attachmentsPattern: "unit_integration_tests.log"
+            body: "The Unit and Integration Tests have failed. Please review the attached log for more details. Attahment: unit_integration_tests.log"
     }
 }
         }
